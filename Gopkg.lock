@@ -38,14 +38,14 @@
   version = "v1.2.2"
 
 [[projects]]
+  branch = "master"
   name = "github.com/thoas/go-funk"
   packages = ["."]
-  revision = "14304e8530de7dbb909c8305591b3a8370dd9dbb"
-  version = "0.2"
+  revision = "117b407e73a24db470c596d00dd9ebee6977aad2"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "76e0a0ba6487d2a68466cfc2ab27fcb9d16864c03a82c62891495c58dc4c0e61"
+  inputs-digest = "be8cc1414d9578c7e884158ed69ba917cb31933c129b45f1c69d87c381870404"
   solver-name = "gps-cdcl"
   solver-version = 1

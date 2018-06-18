@@ -38,8 +38,8 @@
   version = "1.2.2"
 
 [[constraint]]
+  branch = "master"
   name = "github.com/thoas/go-funk"
-  version = "0.2.0"
 
 [prune]
   go-tests = true
