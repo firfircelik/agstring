@@ -257,3 +257,85 @@ func TestTrimPrefixesAndSpace(t *testing.T) {
 		)
 	}
 }
+
+func TestTakeTo(t *testing.T) {
+	testCases := []struct {
+		input        []string
+		truncateTill int
+		expected     []string
+	}{
+		{
+			[]string{"ąćęłńóśźż", "ĄĆĘŁŃÓŚŹŻ"},
+			5,
+			[]string{"ąćęłń", "ĄĆĘŁŃ"},
+		},
+		{
+			[]string{"ドンキーコング", "hello"},
+			100,
+			[]string{"ドンキーコング", "hello"},
+		},
+		{
+			[]string{"ドンキーコング", "hello"},
+			4,
+			[]string{"ドンキー", "hell"},
+		},
+		{
+			[]string{"ドンキーコング", "hello"},
+			7,
+			[]string{"ドンキーコング", "hello"},
+		},
+		{
+			[]string{"1234567890", "1234567890"},
+			7,
+			[]string{"1234567", "1234567"},
+		},
+	}
+
+	for _, testCase := range testCases {
+		require.Equal(t,
+			testCase.expected,
+			TakeTo(testCase.input, testCase.truncateTill),
+		)
+	}
+}
+
+func TestTakeFrom(t *testing.T) {
+	testCases := []struct {
+		input        []string
+		truncateTill int
+		expected     []string
+	}{
+		{
+			[]string{"ąćęłńóśźż", "ĄĆĘŁŃÓŚŹŻ"},
+			5,
+			[]string{"óśźż", "ÓŚŹŻ"},
+		},
+		{
+			[]string{"ドンキーコング", "hello"},
+			100,
+			[]string{"", ""},
+		},
+		{
+			[]string{"ドンキーコング", "hello"},
+			4,
+			[]string{"コング", "o"},
+		},
+		{
+			[]string{"ドンキーコング", "hello"},
+			7,
+			[]string{"", ""},
+		},
+		{
+			[]string{"1234567890", "1234567890"},
+			7,
+			[]string{"890", "890"},
+		},
+	}
+
+	for _, testCase := range testCases {
+		require.Equal(t,
+			testCase.expected,
+			TakeFrom(testCase.input, testCase.truncateTill),
+		)
+	}
+}
