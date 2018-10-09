@@ -171,7 +171,7 @@ func ReplaceWholeWord(s, old, replacement string) string {
 // StringIterator provides a generator of names / strings
 type StringIterator interface {
 	Get() string
-	Next() bool
+	HasNext() bool
 }
 
 // TrimSpace trims spaces in the given slice
