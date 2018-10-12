@@ -29,9 +29,10 @@ func FirstStr(strings []string) string {
 
 // TrimSuffixes returns s without any of the provided trailing suffixes strings.
 func TrimSuffixes(s string, suffixes ...string) string {
+	s = strings.TrimSpace(s)
 	for _, suffix := range suffixes {
 		if strings.HasSuffix(s, suffix) {
-			return strings.TrimSuffix(s, suffix)
+			return strings.TrimSpace(strings.TrimSuffix(s, suffix))
 		}
 	}
 	return s

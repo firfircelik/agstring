@@ -235,6 +235,25 @@ func TestRegexpGroups(t *testing.T) {
 	}
 }
 
+func TestTrimSuffixes(t *testing.T) {
+	testCases := []struct {
+		input, expected string
+		suffixes        []string
+	}{
+		{input: "", expected: "", suffixes: nil},
+		{input: "", expected: "", suffixes: []string{"a"}},
+		{input: "   b   ", expected: "", suffixes: []string{"b"}},
+		{input: "   c", expected: "", suffixes: []string{"c"}},
+		{input: "   d\f", expected: "", suffixes: []string{"d"}},
+		{input: "   d\fe\n", expected: "d\fe", suffixes: []string{"d"}},
+	}
+
+	for _, testCase := range testCases {
+		result := TrimSuffixes(testCase.input, testCase.suffixes...)
+		require.Equal(t, testCase.expected, result)
+	}
+}
+
 func TestTrimPrefixesAndSpace(t *testing.T) {
 	testCases := []struct {
 		input    string
