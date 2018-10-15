@@ -288,8 +288,8 @@ func min(a, b int) int {
 	return b
 }
 
-// ReplaceDayOrdinal replaces day ordinals (`st`, `nd`, `rd`, `th`) with `new`
-// string. Default replaces with empty string.
+// ReplaceDayOrdinal replaces day ordinals (`st`, `nd`, `rd`, `th`)
+// Default replaces with empty string.
 func ReplaceDayOrdinal(s string, replacements ...string) string {
 	var rep string
 	if len(replacements) > 0 {
