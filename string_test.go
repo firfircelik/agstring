@@ -383,9 +383,9 @@ func TestDayOrdinalReplacer(t *testing.T) {
 	for _, testCase := range testCases {
 		require.Equal(t,
 			testCase.expected,
-			DayOrdinalReplacer(testCase.input, testCase.replaceWith),
+			ReplaceDayOrdinal(testCase.input, testCase.replaceWith),
 		)
 	}
 
-	require.Equal(t, "1 Jan", DayOrdinalReplacer("1st Jan"))
+	require.Equal(t, "1 Jan", ReplaceDayOrdinal("1st Jan"))
 }
