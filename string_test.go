@@ -358,3 +358,34 @@ func TestTakeFrom(t *testing.T) {
 		)
 	}
 }
+
+func TestDayOrdinalReplacer(t *testing.T) {
+	testCases := []struct {
+		input       string
+		replaceWith string
+		expected    string
+	}{
+		{
+			"2nd Jan",
+			"",
+			"2 Jan",
+		}, {
+			"3rd Jan",
+			"XX",
+			"3XX Jan",
+		}, {
+			"4th Jan",
+			"ZZZ",
+			"4ZZZ Jan",
+		},
+	}
+
+	for _, testCase := range testCases {
+		require.Equal(t,
+			testCase.expected,
+			DayOrdinalReplacer(testCase.input, testCase.replaceWith),
+		)
+	}
+
+	require.Equal(t, "1 Jan", DayOrdinalReplacer("1st Jan"))
+}

@@ -287,3 +287,16 @@ func min(a, b int) int {
 	}
 	return b
 }
+
+// DayOrdinalReplacer replaces day ordinals (`st`, `nd`, `rd`, `th`) with `new`
+// string. Default replaces with empty string.
+func DayOrdinalReplacer(s string, new ...string) string {
+	var rep string
+	if len(new) > 0 {
+		rep = new[0]
+	} else {
+		rep = ""
+	}
+	ordinal := strings.NewReplacer("st", rep, "nd", rep, "th", rep, "rd", rep)
+	return ordinal.Replace(s)
+}
