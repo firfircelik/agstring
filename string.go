@@ -298,3 +298,13 @@ func ReplaceDayOrdinal(s string, replacements ...string) string {
 	ordinal := strings.NewReplacer("st", rep, "nd", rep, "th", rep, "rd", rep)
 	return ordinal.Replace(s)
 }
+
+// ReplaceNewline replaces the newline character `\n`
+// Default replaces with empty string.
+func ReplaceNewline(s string, replacements ...string) string {
+	var rep string
+	if len(replacements) > 0 {
+		rep = replacements[0]
+	}
+	return strings.Replace(s, "\n", rep, -1)
+}

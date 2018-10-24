@@ -389,3 +389,31 @@ func TestDayOrdinalReplacer(t *testing.T) {
 
 	require.Equal(t, "1 Jan", ReplaceDayOrdinal("1st Jan"))
 }
+
+func TestReplaceNewline(t *testing.T) {
+	input := "Hi\nThere"
+	testCases := []struct {
+		replaceWith string
+		expected    string
+	}{
+		{
+			"",
+			"HiThere",
+		}, {
+			" ",
+			"Hi There",
+		}, {
+			"XXX",
+			"HiXXXThere",
+		},
+	}
+
+	for _, testCase := range testCases {
+		require.Equal(t,
+			testCase.expected,
+			ReplaceNewline(input, testCase.replaceWith),
+		)
+	}
+
+	require.Equal(t, "HiThere", ReplaceNewline(input))
+}
