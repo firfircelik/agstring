@@ -5,7 +5,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	"unicode/utf8"
 
 	"github.com/mozillazg/go-unidecode"
 	"github.com/pkg/errors"
@@ -308,23 +307,4 @@ func ReplaceNewline(s string, replacements ...string) string {
 		rep = replacements[0]
 	}
 	return strings.Replace(s, "\n", rep, -1)
-}
-
-// Reverse a utf8 encoded string
-// copied from https://godoc.org/github.com/huandu/xstrings#Reverse
-func Reverse(str string) string {
-	var size int
-
-	tail := len(str)
-	buf := make([]byte, tail)
-	s := buf
-
-	for len(str) > 0 {
-		_, size = utf8.DecodeRuneInString(str)
-		tail -= size
-		s = append(s[:tail], []byte(str[:size])...)
-		str = str[size:]
-	}
-
-	return string(buf)
 }

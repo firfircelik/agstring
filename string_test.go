@@ -417,15 +417,3 @@ func TestReplaceNewline(t *testing.T) {
 
 	require.Equal(t, "HiThere", ReplaceNewline(input))
 }
-
-func TestReverse(t *testing.T) {
-	testCases := map[string]string{
-		"reverse string": "gnirts esrever",
-		"中文如何？":          "？何如文中",
-		"中en文混~排怎样？a":    "a？样怎排~混文ne中",
-	}
-
-	for input, expected := range testCases {
-		require.Equal(t, expected, Reverse(input))
-	}
-}
