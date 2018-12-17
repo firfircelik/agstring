@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/agflow/agstring.svg?branch=master)](https://travis-ci.org/agflow/agstring)
 [![GoDoc](https://godoc.org/github.com/agflow/agstring?status.svg)](https://godoc.org/github.com/agflow/agstring)
+[![GitHub release](https://img.shields.io/github/release/agflow/agstring.svg)](https://github.com/agflow/agstring/releases/latest)
 [![Go Report](https://goreportcard.com/badge/github.com/agflow/agstring)](https://goreportcard.com/report/github.com/agflow/agstring)
 [![Coverage](https://codecov.io/gh/agflow/agstring/branch/master/graph/badge.svg)](https://codecov.io/gh/agflow/agstring)
 
