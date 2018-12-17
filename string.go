@@ -73,7 +73,7 @@ func RemoveNonAlnum(s string) string {
 }
 
 // ContainsAll checks if given slice contains all searched strings
-func ContainsAll(holder, searched []string) bool {
+func ContainsAll(holder []string, searched ...string) bool {
 	for _, s := range searched {
 		if !funk.ContainsString(holder, s) {
 			return false
@@ -83,7 +83,7 @@ func ContainsAll(holder, searched []string) bool {
 }
 
 // StringContainsAll checks if given string contains all searched strings
-func StringContainsAll(holder string, searched []string) bool {
+func StringContainsAll(holder string, searched ...string) bool {
 	for _, s := range searched {
 		if !strings.Contains(holder, s) {
 			return false
@@ -93,7 +93,7 @@ func StringContainsAll(holder string, searched []string) bool {
 }
 
 // ContainsAny checks if source slice contains any of given strings
-func ContainsAny(src, qs []string) bool {
+func ContainsAny(src []string, qs ...string) bool {
 	for _, q := range qs {
 		if funk.ContainsString(src, q) {
 			return true
@@ -103,7 +103,7 @@ func ContainsAny(src, qs []string) bool {
 }
 
 // StringContainsAny is similar to ContainsAny but source is a string
-func StringContainsAny(s string, ls []string) bool {
+func StringContainsAny(s string, ls ...string) bool {
 	for _, e := range ls {
 		if strings.Contains(s, e) {
 			return true

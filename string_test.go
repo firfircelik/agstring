@@ -174,7 +174,7 @@ func TestContainsAll(t *testing.T) {
 	for _, testCase := range testCases {
 		require.Equalf(t,
 			testCase.expected,
-			ContainsAll(testCase.holder, testCase.searched),
+			ContainsAll(testCase.holder, testCase.searched...),
 			"%v is searched in %v and fails")
 	}
 }
@@ -196,7 +196,47 @@ func TestStringContainsAll(t *testing.T) {
 	for _, testCase := range testCases {
 		require.Equalf(t,
 			testCase.expected,
-			StringContainsAll(testCase.holder, testCase.searched),
+			StringContainsAll(testCase.holder, testCase.searched...),
+			"%v is searched in %q and fails")
+	}
+}
+func TestContainsAny(t *testing.T) {
+	testCases := []struct {
+		holder, searched []string
+		expected         bool
+	}{
+		{nil, []string{"a"}, false},
+		{[]string{"a"}, []string{"a"}, true},
+		{[]string{"a", "b"}, []string{"a"}, true},
+		{[]string{"a", "b"}, []string{"a", "c"}, true},
+		{[]string{"a", "b"}, []string{"d", "e"}, false},
+	}
+
+	for _, testCase := range testCases {
+		require.Equalf(t,
+			testCase.expected,
+			ContainsAny(testCase.holder, testCase.searched...),
+			"%v is searched in %v and fails", testCase.holder, testCase.searched)
+	}
+}
+
+func TestStringContainsAny(t *testing.T) {
+	testCases := []struct {
+		holder   string
+		searched []string
+		expected bool
+	}{
+		{"", []string{"a"}, false},
+		{"a", []string{"a"}, true},
+		{"ab", []string{"a"}, true},
+		{"ab", []string{"a", "c"}, true},
+		{"ab", []string{"c", "d"}, false},
+	}
+
+	for _, testCase := range testCases {
+		require.Equalf(t,
+			testCase.expected,
+			StringContainsAny(testCase.holder, testCase.searched...),
 			"%v is searched in %q and fails")
 	}
 }
