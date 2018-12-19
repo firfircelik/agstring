@@ -19,10 +19,18 @@ func ReplaceMultispace(s string) string {
 	return strings.TrimSpace(stripper.ReplaceAllString(s, " "))
 }
 
-// FirstStr returns the first element of given list or empty string when the list is empty.
-func FirstStr(strings []string) string {
+// First returns the first element of given list or empty string when the list is empty.
+func First(strings []string) string {
 	if len(strings) != 0 {
 		return strings[0]
+	}
+	return ""
+}
+
+// Lastt returns the last  element of given list or empty string when the list is empty.
+func Last(strings []string) string {
+	if len(strings) != 0 {
+		return strings[len(strings)-1]
 	}
 	return ""
 }
@@ -307,4 +315,16 @@ func ReplaceNewline(s string, replacements ...string) string {
 		rep = replacements[0]
 	}
 	return strings.Replace(s, "\n", rep, -1)
+}
+
+func Map(ls []string, funcs ...func(string) string) []string {
+	out := make([]string, len(ls))
+	for i, s := range ls {
+		tmp := s
+		for _, f := range funcs {
+			tmp = f(tmp)
+		}
+		out[i] = tmp
+	}
+	return out
 }

@@ -1,11 +1,11 @@
 package agstring
 
 import (
+	"github.com/stretchr/testify/require"
 	"reflect"
 	"regexp"
+	"strings"
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestReplaceMultispace(t *testing.T) {
@@ -20,7 +20,7 @@ func TestReplaceMultispace(t *testing.T) {
 	}
 }
 
-func TestFirstStr(t *testing.T) {
+func TestFirst(t *testing.T) {
 	tests := []struct {
 		input    []string
 		expected string
@@ -31,7 +31,24 @@ func TestFirstStr(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		if res := FirstStr(tt.input); res != tt.expected {
+		if res := First(tt.input); res != tt.expected {
+			t.Errorf("For input %v, expected %s, got %s", tt.input, tt.expected, res)
+		}
+	}
+}
+
+func TestLast(t *testing.T) {
+	tests := []struct {
+		input    []string
+		expected string
+	}{
+		{[]string{}, ""},
+		{[]string{"one"}, "one"},
+		{[]string{"one", "two"}, "two"},
+	}
+
+	for _, tt := range tests {
+		if res := Last(tt.input); res != tt.expected {
 			t.Errorf("For input %v, expected %s, got %s", tt.input, tt.expected, res)
 		}
 	}
@@ -456,4 +473,26 @@ func TestReplaceNewline(t *testing.T) {
 	}
 
 	require.Equal(t, "HiThere", ReplaceNewline(input))
+}
+
+func TestMap(t *testing.T) {
+	f1 := func(s string) string { return strings.ToTitle(s) }
+	f2 := func(s string) string { return strings.Repeat(s, 3) }
+
+	testCases := []struct {
+		holder   []string
+		funcs    []func(string) string
+		expected []string
+	}{
+		{[]string{"hello"}, []func(string) string{f1}, []string{"HELLO"}},
+		{[]string{"hello"}, []func(string) string{f1, f2}, []string{"HELLOHELLOHELLO"}},
+	}
+
+	for i, testCase := range testCases {
+		require.Equalf(t,
+			testCase.expected,
+			Map(testCase.holder, testCase.funcs...),
+			"%v index is fails", i)
+	}
+
 }
