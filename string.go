@@ -19,20 +19,22 @@ func ReplaceMultispace(s string) string {
 	return strings.TrimSpace(stripper.ReplaceAllString(s, " "))
 }
 
-// First returns the first element of given list or empty string when the list is empty.
-func First(strings []string) string {
-	if len(strings) != 0 {
-		return strings[0]
+// Nth returns nth element of given slice or empty string if out of limits
+func Nth(ls []string, n int) string {
+	if len(ls) == 0 || n < 0 || n >= len(ls) {
+		return ""
 	}
-	return ""
+	return ls[n]
 }
 
-// Lastt returns the last  element of given list or empty string when the list is empty.
-func Last(strings []string) string {
-	if len(strings) != 0 {
-		return strings[len(strings)-1]
-	}
-	return ""
+// First returns the first element of given list or empty string when the list is empty.
+func First(ls []string) string {
+	return Nth(ls, 0)
+}
+
+// Last returns the last element of given list or empty string when the list is empty.
+func Last(ls []string) string {
+	return Nth(ls, len(ls)-1)
 }
 
 // TrimSuffixes returns s without any of the provided trailing suffixes strings.
@@ -185,18 +187,12 @@ type StringIterator interface {
 
 // TrimSpace trims spaces in the given slice
 func TrimSpace(ls []string) []string {
-	for i := range ls {
-		ls[i] = strings.TrimSpace(ls[i])
-	}
-	return ls
+	return Map(ls, strings.TrimSpace)
 }
 
 // ToLower makes lowercase strings in the given slice
 func ToLower(ls []string) []string {
-	for i := range ls {
-		ls[i] = strings.ToLower(ls[i])
-	}
-	return ls
+	return Map(ls, strings.ToLower)
 }
 
 // Title ensures title formatting for given string
@@ -235,11 +231,7 @@ func IsEmpty(ls []string) bool {
 
 // RemoveAllDiacritics removes diacritics from all strings in slice
 func RemoveAllDiacritics(ls []string) []string {
-	res := make([]string, len(ls))
-	for i, s := range ls {
-		res[i] = RemoveDiacritics(s)
-	}
-	return res
+	return Map(ls, RemoveDiacritics)
 }
 
 // SafeAtoi converts string, including empty string, to int
@@ -317,6 +309,7 @@ func ReplaceNewline(s string, replacements ...string) string {
 	return strings.Replace(s, "\n", rep, -1)
 }
 
+// Map runs given modifiers for each item in slice and returns a new slice
 func Map(ls []string, funcs ...func(string) string) []string {
 	out := make([]string, len(ls))
 	for i, s := range ls {
