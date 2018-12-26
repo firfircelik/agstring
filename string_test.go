@@ -1,11 +1,11 @@
 package agstring
 
 import (
-	"github.com/stretchr/testify/require"
-	"reflect"
 	"regexp"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestReplaceMultispace(t *testing.T) {
@@ -13,10 +13,7 @@ func TestReplaceMultispace(t *testing.T) {
 	expects := []string{"a b c d ef", "123"}
 
 	for i, tt := range tests {
-		res := ReplaceMultispace(tt)
-		if res != expects[i] {
-			t.Errorf("%d '%s': Expected %s, got %s", i, tt, expects[i], res)
-		}
+		require.Equal(t, ReplaceMultispace(tt), expects[i])
 	}
 }
 
@@ -25,15 +22,14 @@ func TestFirst(t *testing.T) {
 		input    []string
 		expected string
 	}{
+		{nil, ""},
 		{[]string{}, ""},
 		{[]string{"one"}, "one"},
 		{[]string{"one", "two"}, "one"},
 	}
 
 	for _, tt := range tests {
-		if res := First(tt.input); res != tt.expected {
-			t.Errorf("For input %v, expected %s, got %s", tt.input, tt.expected, res)
-		}
+		require.Equal(t, tt.expected, First(tt.input))
 	}
 }
 
@@ -42,15 +38,14 @@ func TestLast(t *testing.T) {
 		input    []string
 		expected string
 	}{
+		{nil, ""},
 		{[]string{}, ""},
 		{[]string{"one"}, "one"},
 		{[]string{"one", "two"}, "two"},
 	}
 
 	for _, tt := range tests {
-		if res := Last(tt.input); res != tt.expected {
-			t.Errorf("For input %v, expected %s, got %s", tt.input, tt.expected, res)
-		}
+		require.Equal(t, tt.expected, Last(tt.input))
 	}
 }
 
@@ -66,9 +61,7 @@ func TestRemoveDiacritics(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		if res := RemoveDiacritics(tt.input); res != tt.expected {
-			t.Errorf("For input %v, expected %s, got %s", tt.input, tt.expected, res)
-		}
+		require.Equal(t, tt.expected, RemoveDiacritics(tt.input))
 	}
 }
 
@@ -85,11 +78,8 @@ func TestEmptyIf(t *testing.T) {
 		{"?", []string{"-", "tbd"}, "?"},
 		{"agflow", []string{""}, "agflow"},
 	}
-	for i, tt := range tests {
-		if res := EmptyIf(tt.s, tt.emptyList...); res != tt.expected {
-			t.Errorf("%d: For input %q with empty list %v, expected %q, got %q",
-				i, tt.s, tt.emptyList, tt.expected, res)
-		}
+	for _, tt := range tests {
+		require.Equal(t, tt.expected, EmptyIf(tt.s, tt.emptyList...))
 	}
 }
 
@@ -126,10 +116,8 @@ func TestTrimSpace(t *testing.T) {
 		{[]string{" a ", "b"}, []string{"a", "b"}},
 		{[]string{" a", "b "}, []string{"a", "b"}},
 	}
-	for i, tt := range tests {
-		if res := TrimSpace(tt.input); !reflect.DeepEqual(res, tt.expected) {
-			t.Errorf("%d: For input %v, expected %v, not %v", i, tt.input, tt.expected, res)
-		}
+	for _, tt := range tests {
+		require.ElementsMatch(t, tt.expected, TrimSpace(tt.input))
 	}
 }
 
@@ -143,10 +131,8 @@ func TestTitle(t *testing.T) {
 		{"Abc Abc", "Abc Abc"},
 		{"ABc aBC", "Abc Abc"},
 	}
-	for i, tt := range tests {
-		if res := Title(tt.input); res != tt.expected {
-			t.Errorf("%d: For input %v, expected %v, not %v", i, tt.input, tt.expected, res)
-		}
+	for _, tt := range tests {
+		require.Equal(t, tt.expected, Title(tt.input))
 	}
 }
 
@@ -188,11 +174,8 @@ func TestContainsAll(t *testing.T) {
 		{[]string{"a", "b"}, []string{"a", "c"}, false},
 	}
 
-	for _, testCase := range testCases {
-		require.Equalf(t,
-			testCase.expected,
-			ContainsAll(testCase.holder, testCase.searched...),
-			"%v is searched in %v and fails")
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, ContainsAll(tt.holder, tt.searched...))
 	}
 }
 
@@ -210,11 +193,8 @@ func TestStringContainsAll(t *testing.T) {
 		{"ab", []string{"a", "c"}, false},
 	}
 
-	for _, testCase := range testCases {
-		require.Equalf(t,
-			testCase.expected,
-			StringContainsAll(testCase.holder, testCase.searched...),
-			"%v is searched in %q and fails")
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, StringContainsAll(tt.holder, tt.searched...))
 	}
 }
 func TestContainsAny(t *testing.T) {
@@ -229,11 +209,8 @@ func TestContainsAny(t *testing.T) {
 		{[]string{"a", "b"}, []string{"d", "e"}, false},
 	}
 
-	for _, testCase := range testCases {
-		require.Equalf(t,
-			testCase.expected,
-			ContainsAny(testCase.holder, testCase.searched...),
-			"%v is searched in %v and fails", testCase.holder, testCase.searched)
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, ContainsAny(tt.holder, tt.searched...))
 	}
 }
 
@@ -250,11 +227,8 @@ func TestStringContainsAny(t *testing.T) {
 		{"ab", []string{"c", "d"}, false},
 	}
 
-	for _, testCase := range testCases {
-		require.Equalf(t,
-			testCase.expected,
-			StringContainsAny(testCase.holder, testCase.searched...),
-			"%v is searched in %q and fails")
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, StringContainsAny(tt.holder, tt.searched...))
 	}
 }
 
@@ -283,11 +257,11 @@ func TestRegexpGroups(t *testing.T) {
 			expected: map[string]string{"year": "19"},
 		},
 	}
-	for _, testCase := range testCases {
-		match, ok := RegexpGroups(testCase.re, testCase.input)
-		require.Equal(t, testCase.matches, ok, "for input %s", testCase.input)
-		if testCase.matches {
-			require.Equal(t, testCase.expected, match)
+	for _, tt := range testCases {
+		match, ok := RegexpGroups(tt.re, tt.input)
+		require.Equal(t, tt.matches, ok, "for input %s", tt.input)
+		if tt.matches {
+			require.Equal(t, tt.expected, match)
 		}
 	}
 }
@@ -305,9 +279,8 @@ func TestTrimSuffixes(t *testing.T) {
 		{input: "   d\fe\n", expected: "d\fe", suffixes: []string{"d"}},
 	}
 
-	for _, testCase := range testCases {
-		result := TrimSuffixes(testCase.input, testCase.suffixes...)
-		require.Equal(t, testCase.expected, result)
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, TrimSuffixes(tt.input, tt.suffixes...))
 	}
 }
 
@@ -326,11 +299,8 @@ func TestTrimPrefixesAndSpace(t *testing.T) {
 		{"", nil, ""},
 	}
 
-	for _, testCase := range testCases {
-		require.Equal(t,
-			testCase.expected,
-			TrimPrefixesAndSpace(testCase.input, testCase.prefixes),
-		)
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, TrimPrefixesAndSpace(tt.input, tt.prefixes))
 	}
 }
 
@@ -367,18 +337,15 @@ func TestTakeTo(t *testing.T) {
 		},
 	}
 
-	for _, testCase := range testCases {
-		require.Equal(t,
-			testCase.expected,
-			TakeTo(testCase.input, testCase.truncateTill),
-		)
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, TakeTo(tt.input, tt.truncateTill))
 	}
 }
 
 func TestTakeFrom(t *testing.T) {
 	testCases := []struct {
 		input        []string
-		truncateTill int
+		truncateFrom int
 		expected     []string
 	}{
 		{
@@ -408,11 +375,8 @@ func TestTakeFrom(t *testing.T) {
 		},
 	}
 
-	for _, testCase := range testCases {
-		require.Equal(t,
-			testCase.expected,
-			TakeFrom(testCase.input, testCase.truncateTill),
-		)
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, TakeFrom(tt.input, tt.truncateFrom))
 	}
 }
 
@@ -437,11 +401,8 @@ func TestDayOrdinalReplacer(t *testing.T) {
 		},
 	}
 
-	for _, testCase := range testCases {
-		require.Equal(t,
-			testCase.expected,
-			ReplaceDayOrdinal(testCase.input, testCase.replaceWith),
-		)
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, ReplaceDayOrdinal(tt.input, tt.replaceWith))
 	}
 
 	require.Equal(t, "1 Jan", ReplaceDayOrdinal("1st Jan"))
@@ -465,11 +426,8 @@ func TestReplaceNewline(t *testing.T) {
 		},
 	}
 
-	for _, testCase := range testCases {
-		require.Equal(t,
-			testCase.expected,
-			ReplaceNewline(input, testCase.replaceWith),
-		)
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, ReplaceNewline(input, tt.replaceWith))
 	}
 
 	require.Equal(t, "HiThere", ReplaceNewline(input))
@@ -480,7 +438,7 @@ func TestMap(t *testing.T) {
 	f2 := func(s string) string { return strings.Repeat(s, 3) }
 
 	testCases := []struct {
-		holder   []string
+		input    []string
 		funcs    []func(string) string
 		expected []string
 	}{
@@ -488,11 +446,7 @@ func TestMap(t *testing.T) {
 		{[]string{"hello"}, []func(string) string{f1, f2}, []string{"HELLOHELLOHELLO"}},
 	}
 
-	for i, testCase := range testCases {
-		require.Equalf(t,
-			testCase.expected,
-			Map(testCase.holder, testCase.funcs...),
-			"%v index is fails", i)
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, Map(tt.input, tt.funcs...))
 	}
-
 }
