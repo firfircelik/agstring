@@ -28,14 +28,10 @@ func Nth(ls []string, n int) string {
 }
 
 // First returns the first element of given list or empty string when the list is empty.
-func First(ls []string) string {
-	return Nth(ls, 0)
-}
+func First(ls []string) string { return Nth(ls, 0) }
 
 // Last returns the last element of given list or empty string when the list is empty.
-func Last(ls []string) string {
-	return Nth(ls, len(ls)-1)
-}
+func Last(ls []string) string { return Nth(ls, len(ls)-1) }
 
 // TrimSuffixes returns s without any of the provided trailing suffixes strings.
 func TrimSuffixes(s string, suffixes ...string) string {
@@ -186,14 +182,10 @@ type StringIterator interface {
 }
 
 // TrimSpace trims spaces in the given slice
-func TrimSpace(ls []string) []string {
-	return Map(ls, strings.TrimSpace)
-}
+func TrimSpace(ls []string) []string { return Map(ls, strings.TrimSpace) }
 
 // ToLower makes lowercase strings in the given slice
-func ToLower(ls []string) []string {
-	return Map(ls, strings.ToLower)
-}
+func ToLower(ls []string) []string { return Map(ls, strings.ToLower) }
 
 // Title ensures title formatting for given string
 func Title(s string) string { return strings.Title(strings.ToLower(s)) }
@@ -219,20 +211,33 @@ func NonEmpty(ls []string) []string {
 	return nonempty
 }
 
-// IsEmpty checks if slice contains only empty strings
-func IsEmpty(ls []string) bool {
-	for _, s := range ls {
-		if s != "" {
-			return false
-		}
-	}
-	return true
+// NonEmptyIfTrimmed filters nonempty string only if
+// contains some data when whitespace is removed
+func NonEmptyIfTrimmed(ls []string) []string {
+	return nonempty(ls, strings.TrimSpace)
 }
 
-// RemoveAllDiacritics removes diacritics from all strings in slice
-func RemoveAllDiacritics(ls []string) []string {
-	return Map(ls, RemoveDiacritics)
+// Transform modifies a string to another format
+type Transform func(string) string
+
+// UnitTransform doesn't modify its argument
+func UnitTransform(s string) string { return s }
+
+func nonempty(ls []string, t Transform) []string {
+	var nonempty []string
+	for _, s := range ls {
+		if t(s) != "" {
+			nonempty = append(nonempty, s)
+		}
+	}
+	return nonempty
 }
+
+// IsEmpty checks if slice contains only empty strings
+func IsEmpty(ls []string) bool { return len(NonEmpty(ls)) == 0 }
+
+// RemoveAllDiacritics removes diacritics from all strings in slice
+func RemoveAllDiacritics(ls []string) []string { return Map(ls, RemoveDiacritics) }
 
 // SafeAtoi converts string, including empty string, to int
 func SafeAtoi(s string) (int, error) {
