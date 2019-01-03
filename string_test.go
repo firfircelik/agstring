@@ -49,6 +49,22 @@ func TestLast(t *testing.T) {
 	}
 }
 
+func TestNonEmpty(t *testing.T) {
+	tests := []struct {
+		input, expected, ifTrimmed []string
+	}{
+		{nil, nil, nil},
+		{[]string{}, nil, nil},
+		{[]string{"one", "", "   "}, []string{"one", "   "}, []string{"one"}},
+		{[]string{"one", "", "two", "  \n"}, []string{"one", "two", "  \n"}, []string{"one", "two"}},
+	}
+
+	for _, tt := range tests {
+		require.ElementsMatch(t, tt.expected, NonEmpty(tt.input))
+		require.ElementsMatch(t, tt.ifTrimmed, NonEmptyIfTrimmed(tt.input))
+	}
+}
+
 func TestRemoveDiacritics(t *testing.T) {
 	tests := []struct {
 		input    string
