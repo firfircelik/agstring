@@ -118,16 +118,6 @@ func StringContainsAny(s string, ls ...string) bool {
 	return false
 }
 
-// MatchesPrefixes checks if given string has a prefix from given prefix list
-func MatchesPrefixes(s string, prefixes []string) bool {
-	for _, prefix := range prefixes {
-		if strings.HasPrefix(s, prefix) {
-			return true
-		}
-	}
-	return false
-}
-
 // RemoveDiacritics removes diacritics from a string. If non-alphanumeric character is
 // encountered diacritics are removed from it. If removing diacritics is not possible, character
 // is removed.
