@@ -307,6 +307,7 @@ func TestTrimPrefixesAndSpace(t *testing.T) {
 		expected string
 	}{
 		{" cif fob massive port", []string{"fob", "cif"}, "massive port"},
+		{" \\cif fob massive port", []string{"fob", "\\cif"}, "massive port"},
 		{" cif fobmassive port", []string{"fob", "cif"}, "fobmassive port"},
 		{" cif fob massive port", []string{"big", "location"}, "cif fob massive port"},
 		{" cif fob massive port", []string{""}, "cif fob massive port"},

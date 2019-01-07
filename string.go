@@ -50,19 +50,22 @@ func TrimPrefixesAndSpace(s string, prefixes []string) string {
 	if prefixes == nil || s == "" {
 		return s
 	}
+
+	rePres := make([]*regexp.Regexp, 0)
+	for _, prefix := range prefixes {
+		if prefix == "" {
+			continue
+		}
+
+		reE := fmt.Sprintf("^\\s*%s\\b(?P<rest>.*)", regexp.QuoteMeta(prefix))
+		rePres = append(rePres, regexp.MustCompile(reE))
+	}
+
 	trimAgain := true
-	rePre := make([]*regexp.Regexp, len(prefixes))
 	for trimAgain {
 		trimAgain = false
-		for i, prefix := range prefixes {
-			if prefix == "" {
-				continue
-			}
-			if rePre[i] == nil {
-				reE := fmt.Sprintf("^\\s*%s\\b(?P<rest>.*)", prefix)
-				rePre[i] = regexp.MustCompile(reE)
-			}
-			if matches, ok := RegexpGroups(rePre[i], strings.TrimSpace(s)); ok {
+		for _, rePre := range rePres {
+			if matches, ok := RegexpGroups(rePre, strings.TrimSpace(s)); ok {
 				s = matches["rest"]
 				trimAgain = true
 			}
