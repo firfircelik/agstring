@@ -11,11 +11,10 @@ import (
 	funk "github.com/thoas/go-funk"
 )
 
-var stripper = regexp.MustCompile("  +")
-
 // ReplaceMultispace replaces multiple spaces with one space and
 // also trims space from both ends
 func ReplaceMultispace(s string) string {
+	stripper := regexp.MustCompile(`\s{2,}`)
 	return strings.TrimSpace(stripper.ReplaceAllString(s, " "))
 }
 
