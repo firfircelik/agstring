@@ -9,8 +9,8 @@ import (
 )
 
 func TestReplaceMultispace(t *testing.T) {
-	tests := []string{"   a   b   c d    ef  ", "     123   "}
-	expects := []string{"a b c d ef", "123"}
+	tests := []string{"   a   b   c d    ef  ", "     123   ", "1\n\n123"}
+	expects := []string{"a b c d ef", "123", "1 123"}
 
 	for i, tt := range tests {
 		require.Equal(t, ReplaceMultispace(tt), expects[i])
