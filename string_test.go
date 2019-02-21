@@ -467,3 +467,61 @@ func TestMap(t *testing.T) {
 		require.Equal(t, tt.expected, Map(tt.input, tt.funcs...))
 	}
 }
+
+func TestHasSuffix(t *testing.T) {
+	testCases := []struct {
+		input    string
+		suffixes []string
+		expected bool
+	}{
+		{" cif fob massive port", []string{"port", "market"}, true},
+		{" cif fob massive port", []string{""}, true},
+		{"cif fob massive port", []string{"rt"}, true},
+		{"cif fob massive port", []string{"cif", "massive"}, false},
+	}
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, HasSuffix(tt.input, tt.suffixes...))
+	}
+}
+
+func TestTrimAllPrefixes(t *testing.T) {
+	testCases := []struct {
+		input    string
+		prefixes []string
+		expected string
+	}{
+		{" cif fob massive port", []string{"fob", "cif"}, "massive port"},
+		{" \\ciffobmassive port", []string{"fob", "\\cif"}, "massive port"},
+		{" cif fob massive port", []string{"fob"}, "cif fob massive port"},
+		{" cif fob massive port", []string{"big", "location"}, "cif fob massive port"},
+		{" cif fob massive port", []string{""}, "cif fob massive port"},
+		{" cif fob", []string{"fob", "cif"}, ""},
+		{" ", []string{}, ""},
+		{"", nil, ""},
+	}
+
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, TrimAllPrefixes(tt.input, tt.prefixes))
+	}
+}
+
+func TestTrimAllSuffixes(t *testing.T) {
+	testCases := []struct {
+		input    string
+		suffixes []string
+		expected string
+	}{
+		{" cif fob massive port", []string{"massive", "port"}, "cif fob"},
+		{" cif fobmassiveport", []string{"massive", "port"}, "cif fob"},
+		{" cif fob massive port", []string{"massive"}, "cif fob massive port"},
+		{" cif fob massive port", []string{"big", "location"}, "cif fob massive port"},
+		{" cif fob massive port", []string{""}, "cif fob massive port"},
+		{" cif fob", []string{"fob", "cif"}, ""},
+		{" ", []string{}, ""},
+		{"", nil, ""},
+	}
+
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, TrimAllSuffixes(tt.input, tt.suffixes))
+	}
+}

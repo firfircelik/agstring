@@ -43,6 +43,66 @@ func TrimSuffixes(s string, suffixes ...string) string {
 	return s
 }
 
+// TrimAllSuffixes returns a string without any of the provided trailing suffixes or spaces.
+// See test for examples.
+func TrimAllSuffixes(s string, suffixes []string) string {
+	if suffixes == nil || s == "" {
+		return s
+	}
+
+	reSufs := make([]*regexp.Regexp, 0)
+	for _, suffix := range suffixes {
+		if suffix == "" {
+			continue
+		}
+
+		reE := fmt.Sprintf(`^(?P<rest>.*)%s\s*$`, regexp.QuoteMeta(suffix))
+		reSufs = append(reSufs, regexp.MustCompile(reE))
+	}
+
+	trimAgain := true
+	for trimAgain {
+		trimAgain = false
+		for _, reSuf := range reSufs {
+			if matches, ok := RegexpGroups(reSuf, strings.TrimSpace(s)); ok {
+				s = matches["rest"]
+				trimAgain = true
+			}
+		}
+	}
+	return strings.TrimSpace(s)
+}
+
+// TrimAllPrefixes returns a string without any of the provided leading prefixes or spaces.
+// See test for examples.
+func TrimAllPrefixes(s string, prefixes []string) string {
+	if prefixes == nil || s == "" {
+		return s
+	}
+
+	rePres := make([]*regexp.Regexp, 0)
+	for _, prefix := range prefixes {
+		if prefix == "" {
+			continue
+		}
+
+		reE := fmt.Sprintf(`^\s*%s(?P<rest>.*)`, regexp.QuoteMeta(prefix))
+		rePres = append(rePres, regexp.MustCompile(reE))
+	}
+
+	trimAgain := true
+	for trimAgain {
+		trimAgain = false
+		for _, rePre := range rePres {
+			if matches, ok := RegexpGroups(rePre, strings.TrimSpace(s)); ok {
+				s = matches["rest"]
+				trimAgain = true
+			}
+		}
+	}
+	return strings.TrimSpace(s)
+}
+
 // TrimPrefixesAndSpace returns a string without any of the provided leading prefixes at word
 // boundaries or spaces. See test for examples.
 func TrimPrefixesAndSpace(s string, prefixes []string) string {
@@ -181,6 +241,16 @@ func ToLower(ls []string) []string { return Map(ls, strings.ToLower) }
 
 // Title ensures title formatting for given string
 func Title(s string) string { return strings.Title(strings.ToLower(s)) }
+
+// HasSuffix checks string has any one of given suffixes
+func HasSuffix(s string, suffixes ...string) bool {
+	for _, suffix := range suffixes {
+		if strings.HasSuffix(s, suffix) {
+			return true
+		}
+	}
+	return false
+}
 
 // HasPrefix checks string has any one of given prefixes
 func HasPrefix(s string, prefixes ...string) bool {
