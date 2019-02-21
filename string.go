@@ -46,7 +46,7 @@ func TrimSuffixes(s string, suffixes ...string) string {
 // TrimAllSuffixes returns a string without any of the provided trailing suffixes or spaces.
 // See test for examples.
 func TrimAllSuffixes(s string, suffixes []string) string {
-	if suffixes == nil || len(suffixes) == 0 || s == "" {
+	if len(suffixes) == 0 || s == "" {
 		return strings.TrimSpace(s)
 	}
 
@@ -76,7 +76,7 @@ func TrimAllSuffixes(s string, suffixes []string) string {
 // TrimAllPrefixes returns a string without any of the provided leading prefixes or spaces.
 // See test for examples.
 func TrimAllPrefixes(s string, prefixes []string) string {
-	if prefixes == nil || len(prefixes) == 0 || s == "" {
+	if len(prefixes) == 0 || s == "" {
 		return strings.TrimSpace(s)
 	}
 

@@ -497,6 +497,7 @@ func TestTrimAllPrefixes(t *testing.T) {
 		{" cif fob massive port", []string{""}, "cif fob massive port"},
 		{" cif fob", []string{"fob", "cif"}, ""},
 		{" ", []string{}, ""},
+		{"cif fob", nil, "cif fob"},
 		{"", nil, ""},
 	}
 
@@ -518,6 +519,7 @@ func TestTrimAllSuffixes(t *testing.T) {
 		{" cif fob massive port", []string{""}, "cif fob massive port"},
 		{" cif fob", []string{"fob", "cif"}, ""},
 		{" ", []string{}, ""},
+		{"cif fob", nil, "cif fob"},
 		{"", nil, ""},
 	}
 
