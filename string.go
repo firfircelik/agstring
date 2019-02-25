@@ -264,13 +264,7 @@ func HasPrefix(s string, prefixes ...string) bool {
 
 // NonEmpty filters nonempty strings from given slice
 func NonEmpty(ls []string) []string {
-	var nonempty []string
-	for _, s := range ls {
-		if s != "" {
-			nonempty = append(nonempty, s)
-		}
-	}
-	return nonempty
+	return nonempty(ls, UnitTransform)
 }
 
 // NonEmptyIfTrimmed filters nonempty string only if
