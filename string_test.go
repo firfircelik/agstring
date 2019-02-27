@@ -317,7 +317,7 @@ func TestTrimPrefixesAndSpace(t *testing.T) {
 	}
 
 	for _, tt := range testCases {
-		require.Equal(t, tt.expected, TrimPrefixesAndSpace(tt.input, tt.prefixes))
+		require.Equal(t, tt.expected, TrimPrefixesAndSpace(tt.input, tt.prefixes...))
 	}
 }
 
@@ -502,7 +502,7 @@ func TestTrimAllPrefixes(t *testing.T) {
 	}
 
 	for _, tt := range testCases {
-		require.Equal(t, tt.expected, TrimAllPrefixes(tt.input, tt.prefixes))
+		require.Equal(t, tt.expected, TrimAllPrefixes(tt.input, tt.prefixes...))
 	}
 }
 
@@ -524,6 +524,6 @@ func TestTrimAllSuffixes(t *testing.T) {
 	}
 
 	for _, tt := range testCases {
-		require.Equal(t, tt.expected, TrimAllSuffixes(tt.input, tt.suffixes))
+		require.Equal(t, tt.expected, TrimAllSuffixes(tt.input, tt.suffixes...))
 	}
 }
