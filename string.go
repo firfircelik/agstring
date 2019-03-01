@@ -27,10 +27,10 @@ func Nth(ls []string, n int) string {
 }
 
 // First returns the first element of given list or empty string when the list is empty.
-func First(ls []string) string { return Nth(ls, 0) }
+func First(ls ...string) string { return Nth(ls, 0) }
 
 // Last returns the last element of given list or empty string when the list is empty.
-func Last(ls []string) string { return Nth(ls, len(ls)-1) }
+func Last(ls ...string) string { return Nth(ls, len(ls)-1) }
 
 // TrimSuffixes returns s without any of the provided trailing suffixes strings.
 func TrimSuffixes(s string, suffixes ...string) string {
@@ -45,7 +45,7 @@ func TrimSuffixes(s string, suffixes ...string) string {
 
 // TrimAllSuffixes returns a string without any of the provided trailing suffixes or spaces.
 // See test for examples.
-func TrimAllSuffixes(s string, suffixes []string) string {
+func TrimAllSuffixes(s string, suffixes ...string) string {
 	if len(suffixes) == 0 || s == "" {
 		return strings.TrimSpace(s)
 	}
@@ -75,7 +75,7 @@ func TrimAllSuffixes(s string, suffixes []string) string {
 
 // TrimAllPrefixes returns a string without any of the provided leading prefixes or spaces.
 // See test for examples.
-func TrimAllPrefixes(s string, prefixes []string) string {
+func TrimAllPrefixes(s string, prefixes ...string) string {
 	if len(prefixes) == 0 || s == "" {
 		return strings.TrimSpace(s)
 	}
@@ -105,7 +105,7 @@ func TrimAllPrefixes(s string, prefixes []string) string {
 
 // TrimPrefixesAndSpace returns a string without any of the provided leading prefixes at word
 // boundaries or spaces. See test for examples.
-func TrimPrefixesAndSpace(s string, prefixes []string) string {
+func TrimPrefixesAndSpace(s string, prefixes ...string) string {
 	if prefixes == nil || s == "" {
 		return s
 	}
@@ -234,10 +234,10 @@ type StringIterator interface {
 }
 
 // TrimSpace trims spaces in the given slice
-func TrimSpace(ls []string) []string { return Map(ls, strings.TrimSpace) }
+func TrimSpace(ls ...string) []string { return Map(ls, strings.TrimSpace) }
 
 // ToLower makes lowercase strings in the given slice
-func ToLower(ls []string) []string { return Map(ls, strings.ToLower) }
+func ToLower(ls ...string) []string { return Map(ls, strings.ToLower) }
 
 // Title ensures title formatting for given string
 func Title(s string) string { return strings.Title(strings.ToLower(s)) }
@@ -263,13 +263,13 @@ func HasPrefix(s string, prefixes ...string) bool {
 }
 
 // NonEmpty filters nonempty strings from given slice
-func NonEmpty(ls []string) []string {
+func NonEmpty(ls ...string) []string {
 	return nonempty(ls, UnitTransform)
 }
 
 // NonEmptyIfTrimmed filters nonempty string only if
 // contains some data when whitespace is removed
-func NonEmptyIfTrimmed(ls []string) []string {
+func NonEmptyIfTrimmed(ls ...string) []string {
 	return nonempty(ls, strings.TrimSpace)
 }
 
@@ -290,10 +290,10 @@ func nonempty(ls []string, t Transform) []string {
 }
 
 // IsEmpty checks if slice contains only empty strings
-func IsEmpty(ls []string) bool { return len(NonEmpty(ls)) == 0 }
+func IsEmpty(ls ...string) bool { return len(NonEmpty(ls...)) == 0 }
 
 // RemoveAllDiacritics removes diacritics from all strings in slice
-func RemoveAllDiacritics(ls []string) []string { return Map(ls, RemoveDiacritics) }
+func RemoveAllDiacritics(ls ...string) []string { return Map(ls, RemoveDiacritics) }
 
 // SafeAtoi converts string, including empty string, to int
 func SafeAtoi(s string) (int, error) {

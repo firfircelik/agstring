@@ -29,7 +29,7 @@ func TestFirst(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		require.Equal(t, tt.expected, First(tt.input))
+		require.Equal(t, tt.expected, First(tt.input...))
 	}
 }
 
@@ -45,7 +45,7 @@ func TestLast(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		require.Equal(t, tt.expected, Last(tt.input))
+		require.Equal(t, tt.expected, Last(tt.input...))
 	}
 }
 
@@ -60,8 +60,8 @@ func TestNonEmpty(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		require.ElementsMatch(t, tt.expected, NonEmpty(tt.input))
-		require.ElementsMatch(t, tt.ifTrimmed, NonEmptyIfTrimmed(tt.input))
+		require.ElementsMatch(t, tt.expected, NonEmpty(tt.input...))
+		require.ElementsMatch(t, tt.ifTrimmed, NonEmptyIfTrimmed(tt.input...))
 	}
 }
 
@@ -133,7 +133,7 @@ func TestTrimSpace(t *testing.T) {
 		{[]string{" a", "b "}, []string{"a", "b"}},
 	}
 	for _, tt := range tests {
-		require.ElementsMatch(t, tt.expected, TrimSpace(tt.input))
+		require.ElementsMatch(t, tt.expected, TrimSpace(tt.input...))
 	}
 }
 
@@ -317,7 +317,7 @@ func TestTrimPrefixesAndSpace(t *testing.T) {
 	}
 
 	for _, tt := range testCases {
-		require.Equal(t, tt.expected, TrimPrefixesAndSpace(tt.input, tt.prefixes))
+		require.Equal(t, tt.expected, TrimPrefixesAndSpace(tt.input, tt.prefixes...))
 	}
 }
 
@@ -502,7 +502,7 @@ func TestTrimAllPrefixes(t *testing.T) {
 	}
 
 	for _, tt := range testCases {
-		require.Equal(t, tt.expected, TrimAllPrefixes(tt.input, tt.prefixes))
+		require.Equal(t, tt.expected, TrimAllPrefixes(tt.input, tt.prefixes...))
 	}
 }
 
@@ -524,6 +524,6 @@ func TestTrimAllSuffixes(t *testing.T) {
 	}
 
 	for _, tt := range testCases {
-		require.Equal(t, tt.expected, TrimAllSuffixes(tt.input, tt.suffixes))
+		require.Equal(t, tt.expected, TrimAllSuffixes(tt.input, tt.suffixes...))
 	}
 }
