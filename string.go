@@ -8,7 +8,7 @@ import (
 
 	"github.com/mozillazg/go-unidecode"
 	"github.com/pkg/errors"
-	funk "github.com/thoas/go-funk"
+	"github.com/thoas/go-funk"
 )
 
 // ReplaceMultispace replaces multiple spaces with one space and
@@ -184,14 +184,6 @@ func StringContainsAny(s string, ls ...string) bool {
 // encountered diacritics are removed from it. If removing diacritics is not possible, character
 // is removed.
 func RemoveDiacritics(s string) string { return unidecode.Unidecode(s) }
-
-// Normalize tries to remove the diacritics, removes remaining non-alphanumeric characters and
-// then changes case to lower
-func Normalize(s string) string {
-	s = RemoveDiacritics(s)
-	s = RemoveNonAlnum(s)
-	return strings.ToLower(s)
-}
 
 // EmptyIf returns empty string if given string equals to one
 // of the strings in empty list. Otherwise, given string is returned as it is.
