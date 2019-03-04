@@ -527,3 +527,51 @@ func TestTrimAllSuffixes(t *testing.T) {
 		require.Equal(t, tt.expected, TrimAllSuffixes(tt.input, tt.suffixes...))
 	}
 }
+
+func TestConcat(t *testing.T) {
+	testCasesWithASlice := []struct {
+		input    []string
+		expected []string
+	}{
+		{[]string{"slice1", "slice2"}, []string{"slice1", "slice2"}},
+		{[]string{"Rome", "June"}, []string{"Rome", "June"}},
+	}
+
+	for _, tt := range testCasesWithASlice {
+		require.Equal(t, tt.expected, Concat(tt.input))
+	}
+
+	testCasesForSlices := []struct {
+		input    [][]string
+		expected []string
+	}{
+		{[][]string{{"slice1", "slice2"}, {"slice3", "slice4"}},
+			[]string{"slice1", "slice2", "slice3", "slice4"}},
+		{[][]string{{"slice1", "slice2"}, {"slice3", "slice4"}, {"slice5", "slice6"}},
+			[]string{"slice1", "slice2", "slice3", "slice4", "slice5", "slice6"}},
+	}
+
+	for _, tt := range testCasesForSlices {
+		require.Equal(t, tt.expected, Concat(tt.input...))
+	}
+
+	sliceToUpdate := []string{"slice1", "slice2"}
+
+	testCasesWithASliceUpdate := []struct {
+		input    [][]string
+		expected []string
+	}{
+		{[][]string{sliceToUpdate, {"slice3", "slice4"}},
+			[]string{"slice1", "slice2", "slice3", "slice4"}},
+	}
+
+	for _, tt := range testCasesWithASliceUpdate {
+		result := Concat(tt.input...)
+		sliceToUpdate[0] = "abc"
+		require.Equal(t, tt.expected, result)
+		sliceToUpdate = []string{"slice6", "slice7"}
+		require.Equal(t, tt.expected, result)
+	}
+
+	require.Equal(t, 0, len(Concat()))
+}
