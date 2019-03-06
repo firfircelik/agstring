@@ -1,8 +1,9 @@
 package agstring
 
 import (
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestNormalize(t *testing.T) {
@@ -34,6 +35,7 @@ func TestNormalizeDiacritics(t *testing.T) {
 		{"ğöüçş ĞÖÜÇŞ", "goucs goucs"},
 		{"However thÎs prÔject is fÛn", "however this project is fun"},
 		{"", ""},
+		{"7/8/9月", "7/8/9yue"},
 	}
 
 	for _, tt := range tests {
