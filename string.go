@@ -375,10 +375,19 @@ func Map(ls []string, funcs ...func(string) string) []string {
 	return out
 }
 
+// Concat returns a new slice with all the elements of slices on it
 func Concat(slices ...[]string) []string {
 	var concatSlice []string
 	for _, slice := range slices {
 		concatSlice = append(concatSlice, slice...)
 	}
 	return concatSlice
+}
+
+// ReplaceAll returns a string source with all elements of replacements replaced by toBeReplaced
+func ReplaceAll(source string, toBeReplaced string, replacements ...string) string {
+	for _, replacement := range replacements {
+		source = strings.Replace(source, replacement, toBeReplaced, -1)
+	}
+	return source
 }

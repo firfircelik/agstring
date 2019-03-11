@@ -575,3 +575,21 @@ func TestConcat(t *testing.T) {
 
 	require.Equal(t, 0, len(Concat()))
 }
+
+func TestReplaceAll(t *testing.T) {
+	testCasesWithASlice := []struct {
+		input        string
+		toBeReplaced string
+		replacements []string
+		expected     string
+	}{
+		{"January20190301June", "j", []string{"J"},
+			"january20190301june"},
+		{"My saster het a heth pet which as", "", []string{"et", "as"},
+			"My ster h a hh p which "},
+	}
+
+	for _, tt := range testCasesWithASlice {
+		require.Equal(t, tt.expected, ReplaceAll(tt.input, tt.toBeReplaced, tt.replacements...))
+	}
+}
