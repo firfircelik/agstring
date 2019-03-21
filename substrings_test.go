@@ -1,8 +1,9 @@
 package agstring
 
 import (
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestTakeFrom(t *testing.T) {
@@ -122,5 +123,61 @@ func TestTakeBetween(t *testing.T) {
 
 	for _, tt := range testCases {
 		require.Equal(t, tt.expected, TakeBetween(tt.input, tt.from, tt.to))
+	}
+}
+
+func TestTakeAround(t *testing.T) {
+	testCases := []struct {
+		input    []string
+		from     int
+		to       int
+		expected []string
+	}{
+		{
+			[]string{"ąćęłńóśźż", "ĄĆĘŁŃÓŚŹŻ"},
+			3,
+			5,
+			[]string{"ąćęóśźż", "ĄĆĘÓŚŹŻ"},
+		},
+		{
+			[]string{"ドンキーコング", "hello"},
+			100,
+			9,
+			[]string{"ドンキーコング", "hello"},
+		},
+		{
+			[]string{"ドンキーコング", "hello"},
+			40,
+			50,
+			[]string{"ドンキーコング", "hello"},
+		},
+		{
+			[]string{"ドンキーコング", "hello"},
+			0,
+			3,
+			[]string{"ーコング", "lo"},
+		},
+		{
+			[]string{"1234567890", "1234567890"},
+			5,
+			15,
+			[]string{"12345", "12345"},
+		},
+		{
+			[]string{"1234567890", "1234567890"},
+			5,
+			8,
+			[]string{"1234590", "1234590"},
+		},
+		{
+			[]string{"abc def ghi", "ab cd ef hi"},
+			5,
+			9,
+			[]string{"abc dhi", "ab cdhi"},
+		},
+	}
+
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, TakeAround(tt.input, tt.from, tt.to))
 	}
 }

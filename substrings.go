@@ -27,3 +27,15 @@ func TakeFrom(ls []string, n int) []string {
 func TakeBetween(ls []string, from, to int) []string {
 	return TakeFrom(TakeTo(ls, to), from)
 }
+
+// TakeAround cuts strings up to 'to' and from 'from' and returns the combination
+func TakeAround(ls []string, to, from int) []string {
+	out := make([]string, 0, len(ls))
+	for _, s := range ls {
+		rs := []rune(s)
+		l := len(rs)
+		o := string(rs[:min(l, to)]) + string(rs[min(l, from):])
+		out = append(out, o)
+	}
+	return out
+}
