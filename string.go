@@ -8,7 +8,6 @@ import (
 
 	"github.com/mozillazg/go-unidecode"
 	"github.com/pkg/errors"
-	"github.com/thoas/go-funk"
 )
 
 // ReplaceMultispace replaces multiple spaces with one space and
@@ -138,47 +137,6 @@ var nonAlphanumRegexp = regexp.MustCompile("[^[:alnum:]]")
 // RemoveNonAlnum removes non-alphanumeric characters from string
 func RemoveNonAlnum(s string) string {
 	return nonAlphanumRegexp.ReplaceAllLiteralString(s, "")
-}
-
-// ContainsAll checks if given slice contains all searched strings
-func ContainsAll(holder []string, searched ...string) bool {
-	for _, s := range searched {
-		if !funk.ContainsString(holder, s) {
-			return false
-		}
-	}
-	return true
-}
-
-// StringContainsAll checks if given string contains all searched strings
-func StringContainsAll(holder string, searched ...string) bool {
-	for _, s := range searched {
-		if !strings.Contains(holder, s) {
-			return false
-		}
-	}
-	return true
-}
-
-// ContainsAny checks if source slice contains any of given strings
-func ContainsAny(src []string, qs ...string) bool {
-	for _, q := range qs {
-		if funk.ContainsString(src, q) {
-			return true
-		}
-	}
-	return false
-}
-
-// ContainsSubString checks if the searched string is a sub string of
-// the any string in the source slice
-func ContainsSubString(src []string, searched string) bool {
-	return IndexContainingSubString(src, searched) != -1
-}
-
-// StringContainsAny is similar to ContainsAny but source is a string
-func StringContainsAny(s string, ls ...string) bool {
-	return StringIndexContainingSubString(s, ls...) != -1
 }
 
 // RemoveDiacritics removes diacritics from a string. If non-alphanumeric character is
@@ -369,26 +327,4 @@ func ReplaceAll(source string, toBeReplaced string, replacements ...string) stri
 		source = strings.Replace(source, replacement, toBeReplaced, -1)
 	}
 	return source
-}
-
-// IndexContainingSubString returns the first index in given slice
-// which contains the searched string
-func IndexContainingSubString(holder []string, searched string) int {
-	for i := range holder {
-		if strings.Contains(holder[i], searched) {
-			return i
-		}
-	}
-	return -1
-}
-
-// StringIndexContainingSubString returns the first index in given slice
-// which is a sub string of the source string
-func StringIndexContainingSubString(s string, ls ...string) int {
-	for i := range ls {
-		if strings.Contains(s, ls[i]) {
-			return i
-		}
-	}
-	return -1
 }
