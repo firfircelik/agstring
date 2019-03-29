@@ -170,14 +170,15 @@ func ContainsAny(src []string, qs ...string) bool {
 	return false
 }
 
+// ContainsSubString checks if the searched string is a sub string of
+// the any string in the source slice
+func ContainsSubString(src []string, searched string) bool {
+	return IndexContainingSubString(src, searched) != -1
+}
+
 // StringContainsAny is similar to ContainsAny but source is a string
 func StringContainsAny(s string, ls ...string) bool {
-	for _, e := range ls {
-		if strings.Contains(s, e) {
-			return true
-		}
-	}
-	return false
+	return StringIndexContainingSubString(s, ls...) != -1
 }
 
 // RemoveDiacritics removes diacritics from a string. If non-alphanumeric character is
@@ -368,4 +369,26 @@ func ReplaceAll(source string, toBeReplaced string, replacements ...string) stri
 		source = strings.Replace(source, replacement, toBeReplaced, -1)
 	}
 	return source
+}
+
+// IndexContainingSubString returns the first index in given slice
+// which contains the searched string
+func IndexContainingSubString(holder []string, searched string) int {
+	for i := range holder {
+		if strings.Contains(holder[i], searched) {
+			return i
+		}
+	}
+	return -1
+}
+
+// StringIndexContainingSubString returns the first index in given slice
+// which is a sub string of the source string
+func StringIndexContainingSubString(s string, ls ...string) int {
+	for i := range ls {
+		if strings.Contains(s, ls[i]) {
+			return i
+		}
+	}
+	return -1
 }

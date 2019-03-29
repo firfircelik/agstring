@@ -517,3 +517,65 @@ func TestReplaceAll(t *testing.T) {
 		require.Equal(t, tt.expected, ReplaceAll(tt.input, tt.toBeReplaced, tt.replacements...))
 	}
 }
+
+func TestContainsSubString(t *testing.T) {
+	testCases := []struct {
+		holder   []string
+		searched string
+		expected bool
+	}{
+		{nil, "a", false},
+		{[]string{"anna"}, "nn", true},
+		{[]string{"anna", "banana"}, "na", true},
+		{[]string{"anna", "banana"}, "anna", true},
+		{[]string{"anna", "banana"}, "orange", false},
+		{[]string{"", "banana"}, "orange", false},
+		{[]string{"anna", "banana"}, "", true},
+		{[]string{"a", "b"}, "a", true},
+	}
+
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, ContainsSubString(tt.holder, tt.searched))
+	}
+}
+
+func TestIndexContainingSubString(t *testing.T) {
+	testCases := []struct {
+		holder   []string
+		searched string
+		expected int
+	}{
+		{nil, "a", -1},
+		{[]string{"anna"}, "nn", 0},
+		{[]string{"anna", "banana"}, "na", 0},
+		{[]string{"anna", "banana"}, "ana", 1},
+		{[]string{"anna", "banana"}, "orange", -1},
+		{[]string{"", "banana"}, "orange", -1},
+		{[]string{"anna", "banana"}, "", 0},
+		{[]string{"a", "b"}, "a", 0},
+	}
+
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, IndexContainingSubString(tt.holder, tt.searched))
+	}
+}
+
+func TestStringIndexContainingSubString(t *testing.T) {
+	testCases := []struct {
+		holder   string
+		searched []string
+		expected int
+	}{
+		{"a", nil, -1},
+		{"banana", []string{"steve", "anna"}, -1},
+		{"banana", []string{"steve", "ana"}, 1},
+		{"orange", []string{"anna", "banana"}, -1},
+		{"orange", []string{"", "banana"}, 0},
+		{"", []string{"anna", "banana"}, -1},
+		{"a", []string{"a", "b"}, 0},
+	}
+
+	for _, tt := range testCases {
+		require.Equal(t, tt.expected, StringIndexContainingSubString(tt.holder, tt.searched...))
+	}
+}
