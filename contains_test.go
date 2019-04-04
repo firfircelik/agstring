@@ -139,3 +139,61 @@ func TestStringIndexContainingSubString(t *testing.T) {
 		require.Equal(t, tt.expected, StringIndexContainingSubString(tt.holder, tt.searched...))
 	}
 }
+
+func TestContainsSlice(t *testing.T) {
+	trueTestCases := []struct {
+		slice     [][]string
+		s         []string
+		transform []Transform
+	}{
+		{
+			slice: [][]string{{"1", "2", "3"}, {"6", "7", "8"}, {"12", "13", "14"}},
+			s:     []string{"1", "2", "3"},
+		},
+		{
+			slice: [][]string{{"1", "2", "3"}, {}, {"12", "13", "14"}},
+			s:     []string{},
+		},
+		{
+			slice:     [][]string{{"6", "7", "8"}, {"1", "2", "3"}},
+			s:         []string{"11", "12", "13"},
+			transform: []Transform{func(s string) string { return "1" + s }},
+		},
+		{
+			slice: [][]string{{"6", "7", "8"}, {"11", "12", "13"}, {"1", "2", "3"}},
+			s:     []string{"211", "212", "213"},
+			transform: []Transform{func(s string) string { return "1" + s },
+				func(s string) string { return "2" + s }},
+		},
+	}
+
+	for _, tt := range trueTestCases {
+		require.True(t, SliceContains(tt.slice, tt.s, tt.transform...))
+	}
+
+	falseTestCases := []struct {
+		slice     [][]string
+		s         []string
+		transform []Transform
+	}{
+		{
+			slice: [][]string{{"1", "2", "3"}, {"6", "7", "8"}, {"12", "13", "14"}},
+			s:     []string{"16", "26", "36"},
+		},
+		{
+			slice:     [][]string{{"6", "7", "8"}, {"61", "62", "63"}},
+			s:         []string{"1", "2", "3"},
+			transform: []Transform{func(s string) string { return "1" + s }},
+		},
+		{
+			slice: [][]string{{"6", "7", "8"}, {"61", "62", "63"}},
+			s:     []string{"1", "2", "3"},
+			transform: []Transform{func(s string) string { return "1" + s },
+				func(s string) string { return "2" + s }},
+		},
+	}
+
+	for _, tt := range falseTestCases {
+		require.False(t, SliceContains(tt.slice, tt.s, tt.transform...))
+	}
+}
