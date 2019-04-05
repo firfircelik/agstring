@@ -304,20 +304,23 @@ func TestReplaceNewline(t *testing.T) {
 }
 
 func TestMap(t *testing.T) {
-	f1 := func(s string) string { return strings.ToTitle(s) }
-	f2 := func(s string) string { return strings.Repeat(s, 3) }
+	repeat := func(s string) string { return strings.Repeat(s, 3) }
 
 	testCases := []struct {
-		input    []string
-		funcs    []func(string) string
-		expected []string
+		input      []string
+		transforms []Transform
+		expected   []string
 	}{
-		{[]string{"hello"}, []func(string) string{f1}, []string{"HELLO"}},
-		{[]string{"hello"}, []func(string) string{f1, f2}, []string{"HELLOHELLOHELLO"}},
+		{input: []string{"hello"},
+			transforms: []Transform{strings.ToTitle},
+			expected:   []string{"HELLO"}},
+		{input: []string{"hello"},
+			transforms: []Transform{strings.ToTitle, repeat},
+			expected:   []string{"HELLOHELLOHELLO"}},
 	}
 
 	for _, tt := range testCases {
-		require.Equal(t, tt.expected, Map(tt.input, tt.funcs...))
+		require.Equal(t, tt.expected, Map(tt.input, tt.transforms...))
 	}
 }
 

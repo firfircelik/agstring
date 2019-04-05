@@ -1,7 +1,6 @@
 package agstring
 
 import (
-	"reflect"
 	"strings"
 
 	"github.com/thoas/go-funk"
@@ -77,20 +76,8 @@ func stringApplyTransforms(s string, transforms ...Transform) string {
 	return s
 }
 
-func applyTransforms(slice []string, transforms ...Transform) []string {
-	transformed := make([]string, len(slice))
-	for i := range slice {
-		transformed[i] = stringApplyTransforms(slice[i], transforms...)
-	}
-	return transformed
-}
-
 // SliceContains checks if `slice` contains `s`
-func SliceContains(slice [][]string, s []string, transform ...Transform) bool {
-	for _, elem := range slice {
-		if reflect.DeepEqual(s, applyTransforms(elem, transform...)) {
-			return true
-		}
-	}
-	return false
+func SliceContains(slice [][]string, s []string, transforms ...Transform) bool {
+	s = Map(s, transforms...)
+	return funk.Contains(slice, s)
 }

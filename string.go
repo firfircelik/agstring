@@ -300,14 +300,13 @@ func ReplaceNewline(s string, replacements ...string) string {
 }
 
 // Map runs given modifiers for each item in slice and returns a new slice
-func Map(ls []string, funcs ...func(string) string) []string {
+func Map(ls []string, transforms ...Transform) []string {
 	out := make([]string, len(ls))
 	for i, s := range ls {
-		tmp := s
-		for _, f := range funcs {
-			tmp = f(tmp)
+		for _, transform := range transforms {
+			s = transform(s)
 		}
-		out[i] = tmp
+		out[i] = s
 	}
 	return out
 }

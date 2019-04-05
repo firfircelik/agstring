@@ -1,6 +1,7 @@
 package agstring
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -141,10 +142,13 @@ func TestStringIndexContainingSubString(t *testing.T) {
 }
 
 func TestContainsSlice(t *testing.T) {
+	trim1 := func(s string) string { return strings.TrimPrefix(s, "1") }
+	trim2 := func(s string) string { return strings.TrimPrefix(s, "2") }
+
 	trueTestCases := []struct {
-		slice     [][]string
-		s         []string
-		transform []Transform
+		slice      [][]string
+		s          []string
+		transforms []Transform
 	}{
 		{
 			slice: [][]string{{"1", "2", "3"}, {"6", "7", "8"}, {"12", "13", "14"}},
@@ -155,45 +159,43 @@ func TestContainsSlice(t *testing.T) {
 			s:     []string{},
 		},
 		{
-			slice:     [][]string{{"6", "7", "8"}, {"1", "2", "3"}},
-			s:         []string{"11", "12", "13"},
-			transform: []Transform{func(s string) string { return "1" + s }},
+			slice:      [][]string{{"6", "7", "8"}, {"1", "2", "3"}},
+			s:          []string{"11", "12", "13"},
+			transforms: []Transform{trim1},
 		},
 		{
-			slice: [][]string{{"6", "7", "8"}, {"11", "12", "13"}, {"1", "2", "3"}},
-			s:     []string{"211", "212", "213"},
-			transform: []Transform{func(s string) string { return "1" + s },
-				func(s string) string { return "2" + s }},
+			slice:      [][]string{{"6", "7", "8"}, {"11", "12", "13"}, {"1", "2", "3"}},
+			s:          []string{"211", "212", "213"},
+			transforms: []Transform{trim2, trim1},
 		},
 	}
 
 	for _, tt := range trueTestCases {
-		require.True(t, SliceContains(tt.slice, tt.s, tt.transform...))
+		require.True(t, SliceContains(tt.slice, tt.s, tt.transforms...))
 	}
 
 	falseTestCases := []struct {
-		slice     [][]string
-		s         []string
-		transform []Transform
+		slice      [][]string
+		s          []string
+		transforms []Transform
 	}{
 		{
 			slice: [][]string{{"1", "2", "3"}, {"6", "7", "8"}, {"12", "13", "14"}},
 			s:     []string{"16", "26", "36"},
 		},
 		{
-			slice:     [][]string{{"6", "7", "8"}, {"61", "62", "63"}},
-			s:         []string{"1", "2", "3"},
-			transform: []Transform{func(s string) string { return "1" + s }},
+			slice:      [][]string{{"6", "7", "8"}, {"61", "62", "63"}},
+			s:          []string{"1", "2", "3"},
+			transforms: []Transform{trim1},
 		},
 		{
-			slice: [][]string{{"6", "7", "8"}, {"61", "62", "63"}},
-			s:     []string{"1", "2", "3"},
-			transform: []Transform{func(s string) string { return "1" + s },
-				func(s string) string { return "2" + s }},
+			slice:      [][]string{{"6", "7", "8"}, {"61", "62", "63"}},
+			s:          []string{"1", "2", "3"},
+			transforms: []Transform{trim2, trim1},
 		},
 	}
 
 	for _, tt := range falseTestCases {
-		require.False(t, SliceContains(tt.slice, tt.s, tt.transform...))
+		require.False(t, SliceContains(tt.slice, tt.s, tt.transforms...))
 	}
 }
