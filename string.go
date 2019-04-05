@@ -8,6 +8,7 @@ import (
 
 	"github.com/mozillazg/go-unidecode"
 	"github.com/pkg/errors"
+	funk "github.com/thoas/go-funk"
 )
 
 // ReplaceMultispace replaces multiple spaces with one space and
@@ -242,6 +243,12 @@ func nonempty(ls []string, t Transform) []string {
 
 // IsEmpty checks if slice contains only empty strings
 func IsEmpty(ls ...string) bool { return len(NonEmpty(ls...)) == 0 }
+
+// IsEqual checks if two slices are equal after applying transforms on 2nd slice
+func IsEqual(source, other []string, transforms ...Transform) bool {
+	return (source == nil && other == nil) ||
+		funk.Equal(source, Map(other, transforms...))
+}
 
 // RemoveAllDiacritics removes diacritics from all strings in slice
 func RemoveAllDiacritics(ls ...string) []string { return Map(ls, RemoveDiacritics) }

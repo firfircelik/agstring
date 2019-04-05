@@ -69,15 +69,7 @@ func StringIndexContainingSubString(s string, ls ...string) int {
 	return -1
 }
 
-func stringApplyTransforms(s string, transforms ...Transform) string {
-	for _, t := range transforms {
-		s = t(s)
-	}
-	return s
-}
-
 // SliceContains checks if `slice` contains `s`
 func SliceContains(slice [][]string, s []string, transforms ...Transform) bool {
-	s = Map(s, transforms...)
-	return funk.Contains(slice, s)
+	return funk.Contains(slice, Map(s, transforms...))
 }

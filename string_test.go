@@ -449,3 +449,33 @@ func TestReplaceAll(t *testing.T) {
 		require.Equal(t, tt.expected, ReplaceAll(tt.input, tt.toBeReplaced, tt.replacements...))
 	}
 }
+
+func TestIsEqual(t *testing.T) {
+	addA := func(s string) string { return s + "a" }
+	testCases := []struct {
+		input, probe []string
+		transforms   []Transform
+		expected     bool
+	}{
+		{input: []string{}, probe: []string{}, expected: true},
+		{input: []string{}, probe: nil, expected: true},
+		{input: nil, probe: nil, expected: true},
+		{input: []string{"", "a"}, probe: []string{"a", ""}, expected: false},
+		{input: []string{}, probe: []string{},
+			transforms: []Transform{UnitTransform}, expected: true},
+		{input: []string{"a"}, probe: []string{"a"},
+			transforms: []Transform{UnitTransform}, expected: true},
+		{input: []string{"aa"}, probe: []string{"a"},
+			transforms: []Transform{addA, UnitTransform}, expected: true},
+		{input: []string{"ab"}, probe: []string{"a"},
+			transforms: []Transform{addA, UnitTransform}, expected: false},
+		{input: []string{"ab", "aa"}, probe: []string{"a", "a"},
+			transforms: []Transform{addA, UnitTransform}, expected: false},
+	}
+
+	for _, testCase := range testCases {
+		require.Equalf(t, testCase.expected,
+			IsEqual(testCase.input, testCase.probe, testCase.transforms...),
+			"input is %v", testCase)
+	}
+}
