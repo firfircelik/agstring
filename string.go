@@ -8,15 +8,8 @@ import (
 
 	"github.com/mozillazg/go-unidecode"
 	"github.com/pkg/errors"
-	funk "github.com/thoas/go-funk"
+	"github.com/thoas/go-funk"
 )
-
-// ReplaceMultispace replaces multiple spaces with one space and
-// also trims space from both ends
-func ReplaceMultispace(s string) string {
-	stripper := regexp.MustCompile(`\s{2,}`)
-	return strings.TrimSpace(stripper.ReplaceAllString(s, " "))
-}
 
 // Nth returns nth element of given slice or empty string if out of limits
 func Nth(ls []string, n int) string {
@@ -170,15 +163,6 @@ func ValueIfExists(k string, m map[string]string) string {
 	return k
 }
 
-// ReplaceWholeWord replaces old into new only if old occurs as a whole word.
-func ReplaceWholeWord(s, old, replacement string) string {
-	s = " " + s + " "
-	old = " " + old + " "
-	replacement = " " + replacement + " "
-	s = strings.Replace(s, old, replacement, -1)
-	return s[1 : len(s)-1]
-}
-
 // StringIterator provides a generator of names / strings
 type StringIterator interface {
 	Get() string
@@ -285,27 +269,6 @@ func min(a, b int) int {
 	return b
 }
 
-// ReplaceDayOrdinal replaces day ordinals (`st`, `nd`, `rd`, `th`)
-// Default replaces with empty string.
-func ReplaceDayOrdinal(s string, replacements ...string) string {
-	var rep string
-	if len(replacements) > 0 {
-		rep = replacements[0]
-	}
-	ordinal := strings.NewReplacer("st", rep, "nd", rep, "th", rep, "rd", rep)
-	return ordinal.Replace(s)
-}
-
-// ReplaceNewline replaces the newline character `\n`
-// Default replaces with empty string.
-func ReplaceNewline(s string, replacements ...string) string {
-	var rep string
-	if len(replacements) > 0 {
-		rep = replacements[0]
-	}
-	return strings.Replace(s, "\n", rep, -1)
-}
-
 // Map runs given modifiers for each item in slice and returns a new slice
 func Map(ls []string, transforms ...Transform) []string {
 	out := make([]string, len(ls))
@@ -325,12 +288,4 @@ func Concat(slices ...[]string) []string {
 		concatSlice = append(concatSlice, slice...)
 	}
 	return concatSlice
-}
-
-// ReplaceAll returns a string source with all elements of replacements replaced by toBeReplaced
-func ReplaceAll(source string, toBeReplaced string, replacements ...string) string {
-	for _, replacement := range replacements {
-		source = strings.Replace(source, replacement, toBeReplaced, -1)
-	}
-	return source
 }
