@@ -15,6 +15,7 @@ func TestNormalize(t *testing.T) {
 		{"  qwesDsfsdf      ", "qwesdsfsdf"},
 		{"sdAAAaA    sdas \n", "sdaaaaa    sdas"},
 		{" \t\n Hello World \n\t\r\n", "hello world"},
+		{"\u200BHowever thÎs prÔject is fÛn", "however thîs prôject is fûn"},
 		{"However thÎs prÔject is fÛn", "however thîs prôject is fûn"},
 		{"", ""},
 	}

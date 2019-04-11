@@ -4,9 +4,9 @@ import (
 	"strings"
 )
 
-// Normalize first lowercase string and then trim it
+// Normalize first replace ZeroWidth chars then trims it and finally lowercase it
 func Normalize(s string) string {
-	return strings.ToLower(strings.TrimSpace(s))
+	return strings.ToLower(TrimAndRemoveZeroWidthChars(s))
 }
 
 // NormalizeDiacritics remove diacritics from a normalized string
