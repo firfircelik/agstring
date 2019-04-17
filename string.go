@@ -1,6 +1,7 @@
 package agstring
 
 import (
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -155,6 +156,15 @@ func RegexpGroups(exp *regexp.Regexp, input string) (map[string]string, bool) {
 		}
 	}
 	return result, true
+}
+
+// Reprintf returns a string according to fmt format escaping the parameters before.
+func Reprintf(format string, params ...string) string {
+	var interfaceSlice = make([]interface{}, len(params))
+	for i, d := range params {
+		interfaceSlice[i] = regexp.QuoteMeta(d)
+	}
+	return fmt.Sprintf(format, interfaceSlice...)
 }
 
 func min(a, b int) int {

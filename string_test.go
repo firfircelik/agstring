@@ -278,3 +278,16 @@ func TestIsEqual(t *testing.T) {
 			"input is %v", testCase)
 	}
 }
+
+func TestReprintf(t *testing.T) {
+	testCases := []struct {
+		format   string
+		params   []string
+		expected string
+	}{
+		{format: "%s", params: []string{`This: .+`}, expected: "This: \\.\\+"},
+	}
+	for _, testCase := range testCases {
+		require.Equal(t, testCase.expected, Reprintf(testCase.format, testCase.params...))
+	}
+}
