@@ -194,3 +194,14 @@ func Concat(slices ...[]string) []string {
 	}
 	return concatSlice
 }
+
+// Omit excludes given string from the slice
+func Omit(ls []string, omitted string) []string {
+	var res []string
+	for _, s := range ls {
+		if s != omitted {
+			res = append(res, s)
+		}
+	}
+	return res
+}

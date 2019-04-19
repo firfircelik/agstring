@@ -291,3 +291,35 @@ func TestReprintf(t *testing.T) {
 		require.Equal(t, testCase.expected, Reprintf(testCase.format, testCase.params...))
 	}
 }
+
+func TestOmit(t *testing.T) {
+	testCases := []struct {
+		input, expected []string
+		omit            string
+	}{
+		{
+			input:    nil,
+			expected: nil,
+			omit:     "agflow",
+		},
+		{
+			input:    []string{},
+			expected: nil,
+			omit:     "agflow",
+		},
+		{
+			input:    []string{"agriculture"},
+			expected: []string{"agriculture"},
+			omit:     "agflow",
+		},
+		{
+			input:    []string{"agriculture", "agflow", "intelligence"},
+			expected: []string{"agriculture", "intelligence"},
+			omit:     "agflow",
+		},
+	}
+
+	for _, testCase := range testCases {
+		require.Equal(t, testCase.expected, Omit(testCase.input, testCase.omit))
+	}
+}
