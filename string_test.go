@@ -323,3 +323,30 @@ func TestOmit(t *testing.T) {
 		require.Equal(t, testCase.expected, Omit(testCase.input, testCase.omit))
 	}
 }
+
+func TestMustEqual(t *testing.T) {
+	addA := func(s string) string { return s + "a" }
+	testCases := []struct {
+		input, probe []string
+		transforms   []Transform
+		expected     error
+	}{
+		{input: []string{}, probe: []string{}},
+		{input: []string{}, probe: nil},
+		{input: nil, probe: nil},
+		{input: []string{"a", "a"}, probe: []string{"a", "a"}},
+		{input: []string{}, probe: []string{},
+			transforms: []Transform{UnitTransform}},
+		{input: []string{"a"}, probe: []string{"a"},
+			transforms: []Transform{UnitTransform}},
+		{input: []string{"aa"}, probe: []string{"aa"}},
+		{input: []string{"aa"}, probe: []string{"a"},
+			transforms: []Transform{addA, UnitTransform}},
+	}
+
+	for _, testCase := range testCases {
+		require.Equalf(t, testCase.expected,
+			MustEqual(testCase.input, testCase.probe, testCase.transforms...),
+			"input is %v", testCase)
+	}
+}

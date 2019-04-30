@@ -133,7 +133,7 @@ func IsEqual(source, other []string, transforms ...Transform) bool {
 // MustEqual checks if two slices are equal after applying transforms on 2nd slice otherwise return error
 func MustEqual(source, other []string, transforms ...Transform) error {
 	if !IsEqual(source, other, transforms...) {
-		return errors.Errorf("need to be equal")
+		return errors.Errorf("must be equal: expected %v, got %v", source, other)
 	}
 	return nil
 }
